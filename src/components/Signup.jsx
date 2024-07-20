@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
   const {
@@ -128,14 +129,15 @@ const Signup = () => {
               "Create Account"
             )}
           </button>
+
           <p className="pt-3 text-center">
             Already have an account?{" "}
-            <a
-              href="/signin"
+            <Link
+              to="/signin"
               className="text-blue-500 cursor-pointer hover:text-blue-400"
             >
               Sign In
-            </a>{" "}
+            </Link>{" "}
             now
           </p>
 
