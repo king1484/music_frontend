@@ -13,9 +13,10 @@ const Player = ({
   suggestions,
 }) => {
   const navigate = useNavigate();
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
   return (
     <>
-      {(musicLoading || audio.url) && (
+      {(musicLoading || audio.youtubeId) && (
         <div
           className={`
             ${musicLoading ? "justify-center" : "justify-between"}
@@ -113,7 +114,7 @@ const Player = ({
                 </div>
                 <AudioPlayer
                   autoPlay
-                  src={audio.url}
+                  src={serverUrl + "/song/?id=" + audio.youtubeId}
                   layout="stacked"
                   customVolumeControls={[]}
                   showJumpControls={false}

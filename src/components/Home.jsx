@@ -113,13 +113,8 @@ const Home = () => {
     setSearchIconClicked(false);
     setShowSearchList(false);
     setMusicLoading(true);
-    let res = await fetch(`${serverUrl}/song`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: music.youtubeId }),
-    });
-    let response = await res.json();
-    let audio = response[0];
+
+    let audio = {};
     audio["thumbnailUrl"] = music.thumbnailUrl;
     audio["artists"] = music.artists;
     audio["title"] = music.title;
@@ -136,7 +131,7 @@ const Home = () => {
         email: localStorage.getItem("email"),
       }),
     });
-    console.log(music.thumbnailUrl);
+
 
     navigator.mediaSession.metadata = new MediaMetadata({
       title: audio.title,
