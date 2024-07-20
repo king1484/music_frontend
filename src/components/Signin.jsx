@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Signin = () => {
   const {
@@ -119,12 +120,12 @@ const Signin = () => {
           </button>
           <p className="pt-3 text-center">
             Not created an account yet?{" "}
-            <a
-              href="/signup"
+            <Link
+              to="/signup"
               className="text-blue-500 cursor-pointer hover:text-blue-400"
             >
               Sign Up
-            </a>{" "}
+            </Link>{" "}
             now
           </p>
 
