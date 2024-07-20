@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #f3f4f6;
+  font-family: "Noto Sans";
+}
+
+::-webkit-scrollbar {
+  height: 0.8rem;
+}
+
+::-webkit-scrollbar-track {
+  background: #eeeded;
+  border-radius: 0.8rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+  border-radius: 0.8rem;
+  border: 2px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media screen and (max-width: 768px) {
+  ::-webkit-scrollbar {
+    height: 0.5rem;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #bdbdbd;
+    border-radius: 0.8rem;
+    border: 1px solid #f1f1f1;
+  }
+
+  .song-expanded .rhap_progress-section {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+
+  /* .song-expanded .rhap_play-pause-button svg{
+    width: 3rem;
+    height: 3rem;
+  } */
+
+  .song-expanded .rhap_main.rhap_stacked {
+    align-items: normal;
+  }
+
+  .song-collapsed .rhap_progress-section {
+    display: none;
+  }
+
+  .song-collapsed .rhap_main.rhap_stacked {
+    margin: 0;
+    padding: 0;
+    align-items: center;
+  }
+}
+
+.song-expanded .rhap_controls-section button,
+.song-expanded .rhap_controls-section button svg {
+  width: 3rem;
+  height: 3rem;
+}
+
+.song-expanded .rhap_additional-controls button,
+.song-expanded .rhap_additional-controls button svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.rhap_time {
+  font-size: 14px;
+  line-height: 13px;
+  letter-spacing: 0.04em;
+  color: #757575;
+}
+
+.song-expanded .rhap_additional-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.song-expanded .rhap_volume-controls {
+  display: none;
+}
+
+.song-expanded .rhap_controls-section {
+  position: relative;
+  justify-content: center;
+}
+
+.song-expanded .rhap_additional-controls {
+  position: absolute;
+  left: 0;
+}
+
+.rhap_button-clear.rhap_main-controls-button.rhap_play-pause-button {
+  color: rgb(227, 64, 64);
+}
