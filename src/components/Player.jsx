@@ -14,6 +14,20 @@ const Player = ({
 }) => {
   const navigate = useNavigate();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
+
+  useEffect(() => {
+    window.history.pushState(null, document.title, window.location.href);
+    const handleBackButton = (event) => {
+      event.preventDefault();
+      setExpandSong(false);
+    };
+
+    window.addEventListener('popstate', handleBackButton);
+    return () => {
+      window.removeEventListener('popstate', handleBackButton);
+    };
+  }, [expandSong]);
+
   return (
     <>
       {(musicLoading || audio.youtubeId) && (
@@ -59,6 +73,9 @@ const Player = ({
              w-full`}
                 style={{
                   height: expandSong
+                    ? `calc(${window.innerHeight}px - 15vh)`
+                    : null,
+                  maxHeight: expandSong
                     ? `calc(${window.innerHeight}px - 15vh)`
                     : null,
                 }}

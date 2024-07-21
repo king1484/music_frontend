@@ -132,13 +132,10 @@ const Home = () => {
       }),
     });
 
-
     navigator.mediaSession.metadata = new MediaMetadata({
       title: audio.title,
       artist: audio.artists.map((artist) => artist.name).join(", "),
-      artwork: [
-        { src: music.thumbnailUrl, sizes: "512x512"},
-      ],
+      artwork: [{ src: music.thumbnailUrl, sizes: "512x512" }],
     });
 
     setMusicLoading(false);
@@ -191,7 +188,7 @@ const Home = () => {
     >
       <div
         className={`w-full flex flex-col mx-2 pt-[9vh] sm:pt-[10vh] items-center ${
-          expandSong ? "pb-0" : audio.url ? "pb-[4.3rem]" : "pb-0"
+          expandSong ? "pb-0" : audio.youtubeId ? "pb-[4.3rem]" : "pb-0"
         }`}
       >
         <div className="z-10 fixed top-0 flex flex-col w-full items-center">
@@ -215,12 +212,11 @@ const Home = () => {
               </svg>
               <p
                 className={`${
-                  searchIconClicked
-                    ? "hidden"
-                    : "block text-[1.3rem] font-bold ml-1"
-                } "text-2xl font-bold ml-4`}
+                  searchIconClicked ? "hidden" : "block text-[1.3rem] ml-1"
+                } "text-2xl font-semibold ml-4"`}
+                style={{ fontFamily: "Francois One" }}
               >
-                Music
+                Music Fusion
               </p>
             </div>
 
@@ -428,7 +424,7 @@ const Home = () => {
         suggestions={suggestions}
         handleNext={handleNext}
         handlePrev={handlePrev}
-      />  
+      />
     </div>
   );
 };
