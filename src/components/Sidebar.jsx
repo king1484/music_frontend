@@ -1,8 +1,25 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/api";
 
 const Sidebar = ({ showNav, setShowNav, setExpandSong }) => {
   const navigate = useNavigate();
+
+  async function logout() {
+    try {
+      const res = await api.delete("/api/refreshToken");
+      const response = res.data;
+      if (response.error) {
+        console.log(response.message);
+      } else {
+        localStorage.removeItem("token");
+        localStorage.removeItem("email");
+        navigate("/signin");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div
@@ -114,9 +131,7 @@ const Sidebar = ({ showNav, setShowNav, setExpandSong }) => {
         </li>
         <li
           onClick={() => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("email");
-            navigate("/signin");
+            logout();
           }}
           className="flex items-center space-x-2 hover:bg-gray-200 cursor-pointer rounded-lg"
         >

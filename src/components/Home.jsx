@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Sidebar from "./Sidebar";
 import Player from "./Player";
+import api from "../api/api";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -30,26 +31,25 @@ const Home = () => {
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/signin");
+    } else {
+      loadHomeMusics();
     }
     document.addEventListener("mousedown", handleClickOutside);
-    loadHomeMusics();
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   async function playMusicFromHistory(music) {
-    await fetch(`${serverUrl}/history`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    await api.post(
+      "/api/history/addSong",
+      {
         music: music,
         youtubeId: music.youtubeId,
         email: localStorage.getItem("email"),
-      }),
-    });
+      },
+      { headers: { "Content-Type": "application/json" } }
+    );
     navigate(location.pathname, { replace: true });
     loadSuggestions(music);
   }
@@ -72,21 +72,20 @@ const Home = () => {
     }
   };
 
-  const serverUrl = import.meta.env.VITE_SERVER_URL;
-
   async function submit(data) {
     if (data.search.length == 0) {
       return;
     }
     let query = data.search;
-    let res = await fetch(`${serverUrl}/search`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query }),
-    });
-    let response = await res.json();
+    let res = await api.post(
+      "/api/song/search",
+      { query },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    let response = res.data;
+    let songs = response.data;
     setShowSearchList(true);
-    setsearchMusics(response);
+    setsearchMusics(songs);
   }
 
   const [suggestions, setSuggestions] = useState([]);
@@ -96,14 +95,13 @@ const Home = () => {
     setSearchIconClicked(false);
     setShowSearchList(false);
     setMusicLoading(true);
-    const res = await fetch(`${serverUrl}/suggestions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ videoId: music.youtubeId }),
-    });
-    const data = await res.json();
+    const res = await api.post(
+      "/api/song/suggestions",
+      { videoId: music.youtubeId },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    const response = res.data;
+    const { data } = response;
     setSuggestions(data);
     getSongData(data[0]);
   }
@@ -120,17 +118,15 @@ const Home = () => {
     audio["title"] = music.title;
     audio["youtubeId"] = music.youtubeId;
 
-    await fetch(`${serverUrl}/history`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    await api.post(
+      "/api/history/addSong",
+      {
         music: audio,
         youtubeId: music.youtubeId,
         email: localStorage.getItem("email"),
-      }),
-    });
+      },
+      { headers: { "Content-Type": "application/json" } }
+    );
 
     navigator.mediaSession.metadata = new MediaMetadata({
       title: audio.title,
@@ -168,13 +164,14 @@ const Home = () => {
 
   async function loadHomeMusics() {
     const fetchPromises = homeMusicsQueries.map(async (query) => {
-      const res = await fetch(`${serverUrl}/search`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
-      });
-      const response = await res.json();
-      return { query, musics: response };
+      const res = await api.post(
+        "/api/song/search",
+        { query },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      const response = res.data;
+      const { data } = response;
+      return { query, musics: data };
     });
 
     const results = await Promise.all(fetchPromises);
@@ -213,8 +210,11 @@ const Home = () => {
               <p
                 className={`${
                   searchIconClicked ? "hidden" : "block text-[1.3rem] ml-1"
-                } "text-2xl font-semibold ml-4"`}
+                } "text-2xl font-semibold ml-4 cursor-pointer hover:cursor-pointer"`}
                 style={{ fontFamily: "Francois One" }}
+                onClick={() => {
+                  navigate("/", { replace: true });
+                }}
               >
                 Music Fusion
               </p>

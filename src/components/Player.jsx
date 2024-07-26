@@ -131,7 +131,7 @@ const Player = ({
                 </div>
                 <AudioPlayer
                   autoPlay
-                  src={serverUrl + "/song/?id=" + audio.youtubeId}
+                  src={serverUrl + "/api/song/stream/?id=" + audio.youtubeId}
                   layout="stacked"
                   customVolumeControls={[]}
                   showJumpControls={false}

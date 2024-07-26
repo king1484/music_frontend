@@ -1,26 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/api";
 
 const History = () => {
   const navigate = useNavigate();
   const [musics, setMusics] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const serverUrl = import.meta.env.VITE_SERVER_URL;
 
   async function getData() {
-    let res = await fetch(`${serverUrl}/getHistory`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: localStorage.getItem("email") }),
-    });
-    let response = await res.json();
-    setMusics(response);
+    let res = await api.post(
+      "/api/history/getSongs",
+      { email: localStorage.getItem("email") },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    let response = res.data;
+    let { data } = response;
+    setMusics(data);
     setIsLoading(false);
   }
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/signin");
+    }
     getData();
   }, []);
 
